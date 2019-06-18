@@ -13,7 +13,7 @@ from utils import removeNonAscii,clean_comments,words
 en_stopwords = set(stopwords.words('english'))
 
 argparser = argparse.ArgumentParser(description='Spelling Correction app')
-argparser.add_argument('--corpus_path', default="big.txt")
+argparser.add_argument('--corpus_path', default="text_corpus.txt")
 args = argparser.parse_args()
 
 comments = open(args.corpus_path,'r').read()

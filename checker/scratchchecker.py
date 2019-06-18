@@ -9,7 +9,7 @@ from textblob import Word
 import pickle
 
 class SpellCorrector(object):
-	"""docstring for SpellCorrector"""
+	"""SpellCorrector class implements single spell correction algorithm based on token frequency supplied"""
 	def __init__(self, corpus_path='WORDS.pkl'):
 		super(SpellCorrector, self).__init__()
 		self.WORDS=defaultdict(int)
@@ -30,14 +30,12 @@ class SpellCorrector(object):
 	
 	def correction(self,word): 
 		"Most probable spelling correction for word."
-		# return list(map(lambda x: (x,self.P(x)),self.candidates(word)))
 		return max(self.candidates(word), key=self.P)
 
 		
 	def candidates(self,word): 
 		"Generate possible spelling corrections for word."
 		return self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or [word]
-		# return self.known([word]) + self.known(self.edits1(word)) + self.known(self.edits2(word)) + [word]
 			
 	def known(self,words): 
 		"The subset of `words` that appear in the dictionary of WORDS."
@@ -59,7 +57,7 @@ class SpellCorrector(object):
 		
 
 class WordSegmentor(object):
-	"""docstring for WordSegmentor"""
+	"""WordSegmentor implements viterbi algorithm to segment word into multiple words to maximise word likelihood"""
 	def __init__(self, corpus_path='WORDS.pkl'):
 		super(WordSegmentor, self).__init__()
 		self.sc=SpellCorrector(corpus_path)
@@ -81,8 +79,6 @@ class WordSegmentor(object):
 		if not text: return []
 		candidates = [[first.strip()]+[rem.strip()] for first,rem in self.splits(text)]
 		candidates = [[c for c in can if c!=""] for can in candidates ]
-		# print(candidates)
-		# print(list(map(lambda x: (x,self.Pwords(x)),candidates)))
 		return max(candidates, key=self.Pwords)
 	
 	def Pwords(self,words):
@@ -96,7 +92,7 @@ class WordSegmentor(object):
 
 		
 class ScratchChecker(BaseChecker):
-	"""docstring for ScratchChecker"""
+	"""ScratchChecker implements spell checker given token frequency"""
 	def __init__(self, preproc_rules=None,corpus_path='WORDS.pkl'):
 		super(ScratchChecker, self).__init__(preproc_rules)
 		self.sc=SpellCorrector(corpus_path)

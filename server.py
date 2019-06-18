@@ -15,6 +15,7 @@ from preprocess_rules import rule_pipe
 
 app = Sanic(__name__)
 _LOGGER = logging.getLogger('sanic')
+
 argparser = argparse.ArgumentParser(description='Spelling Correction app')
 argparser.add_argument('--checker', choices=["gingerit","textblob","scratch"], default="scratch")
 args = argparser.parse_args()
@@ -38,15 +39,13 @@ async def post_handler(request):
 		Request with sentence
 	Returns
 	-------
-	response object
+	response list of words
 	"""
 	try:
 		result={}
-		# print(request.json)
 		st_dt=datetime.now()
 		word=request.json['word']
 		result={"corrected_words":checker.checks_spell(word)}
-		#get list of repositories based on stars	
 		en_dt=datetime.now()
 		_LOGGER.info(f"Time Taken {en_dt-st_dt}")
 		
@@ -63,10 +62,10 @@ async def other_handler(request):
 	Parameters
 	----------
 	request: sanic request object
-		Request with org_id
+		Request with sentence
 	Returns
 	-------
-	response object
+	response list of words
 	"""
 	return response.json({"message":f"Try POST instead"},headers={'X-Served-By':'avhirup'},status=405)
 

@@ -5,7 +5,7 @@ from sklearn.pipeline import Pipeline
 logger=logging.getLogger(__name__)
 
 class Rule(BaseEstimator,TransformerMixin):
-	"""docstring for Rule"""
+	"""Base class to implement any rule for processing"""
 	def fit(self,X,y=None):
 		return self
 
@@ -17,10 +17,9 @@ class Rule(BaseEstimator,TransformerMixin):
 
 
 class RemoveNonAlphanumeric(Rule):
-	"""docstring for RemoveNonAlphanumeric"""
+	"""RemoveNonAlphanumeric"""
 	name="RemoveNonAlphanumeric"
 	def process(self,sent):
 		return re.sub('[^\w.,;!?]', '',sent)
-		# return re.sub('[\W]', '',sent)
 
 rule_pipe=Pipeline([("RemoveNonAlphanumeric",RemoveNonAlphanumeric())])

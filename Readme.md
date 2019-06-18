@@ -2,8 +2,8 @@
 Following repository is a spell correction engine which takes in input word and returns list of corrected words.
 ## Features:
 * Multiple SpellChecker Engines for spell correction:
-    - Gingerit:Online advance API for spell correction.
-    - TextBlob:Offline . Uses textblob for spell correction.
+    - Gingerit: Uses online API for spell correction.
+    - TextBlob: Uses textblob downloded offline for spell correction.
     - Scratch: Custom spell checker built from scratch.
 * Option for adding preprocessing rules:
     * Remove non alphanumeric.
@@ -15,7 +15,16 @@ Following repository is a spell correction engine which takes in input word and 
 * Async Request:
     * Able to process multiple requests asyncronously .Thanks to Sanic.
 
-## Process:
+## Environment
+python version : 3.6.8
+* create environment
+    * conda create -n haikujam python=3.6
+* activate environment
+    * source activate haikujam
+* install required packages as mentioned in requirements.txt
+    * pip install -r requirements.txt
+
+## Usage:
 ### For Gingerit and Textblob:
     * Start server:
     PYTHONDONTWRITEBYTECODE=1 python server.py --checker='gingerit'
@@ -27,10 +36,10 @@ Following repository is a spell correction engine which takes in input word and 
         }'
     * {"corrected_words":["hello","world"]}
     * Note: gingerit fails at sometimes and may result in  "Empty reply from server error".Wait few mins and try again.This because of HTTPS and HTTP conflict or limit to API_KEY used in gingerit.
-    
-### For Custom usecase:
-    * Build word counter:
-        * PYTHONDONTWRITEBYTECODE=1 python collocation_finder.py --corpus_path='big.txt'
+
+### For Custom corpus:
+    * Build token frequency:
+        * PYTHONDONTWRITEBYTECODE=1 python collocation_finder.py --corpus_path='text_corpus.txt'
     * Start server:
         * PYTHONDONTWRITEBYTECODE=1 python server.py --checker='scratch'
     * send request:
@@ -73,11 +82,5 @@ Following repository is a spell correction engine which takes in input word and 
     * {"corrected_words":["night"]}
 # To Do:
 * In scratch engine:
-    * the used corpus is small and the vocabulary is limited.For practical purposed we would need to choose dataset based on use case. For social media applications,https://www.english-corpora.org/tv/ is a good option as the language is informal and contains several slangs.
-    * Google has released Web n-grams @ https://catalog.ldc.upenn.edu/LDC2006T13 . This contains many bigrams, trigrams , 4 grams & 5-grams with their correponding frequency.
-
-
-
-
-https://www.english-corpora.org/tv/
-https://catalog.ldc.upenn.edu/LDC2006T13
+    * The corpus used is small and the vocabulary is limited.For practical purposes we would need to choose dataset based on use case. For social media applications,https://www.english-corpora.org/tv/ is a good option as the language is informal and contains several slangs.
+    * Google has released Web n-grams @ https://catalog.ldc.upenn.edu/LDC2006T13 . This contains many bigrams, trigrams , 4 grams & 5-grams with their correponding frequency.This could significantly increase detection of phrases with multiple words.
