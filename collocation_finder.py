@@ -2,6 +2,7 @@ import numpy as np
 import spacy
 import re
 import string
+import argparse
 import pandas as pd
 from nltk.corpus import stopwords
 import nltk
@@ -11,10 +12,11 @@ from utils import removeNonAscii,clean_comments,words
 #get english stopwords
 en_stopwords = set(stopwords.words('english'))
 
-#extract only reviews
-corpus_path='big.txt'
+argparser = argparse.ArgumentParser(description='Spelling Correction app')
+argparser.add_argument('--corpus_path', default="big.txt")
+args = argparser.parse_args()
 
-comments = open(corpus_path,'r').read()
+comments = open(args.corpus_path,'r').read()
 THRESHOLD_FREQ=2
 THRES=4
 
@@ -96,7 +98,7 @@ trigrams={}
 for k,v in zip(trigramFreqTable['trigram'],trigramFreqTable['freq']):
     trigrams[k]=v
 
-words_counter=dict(Counter(words(open(corpus_path).read())))
+words_counter=dict(Counter(words(open(args.corpus_path).read())))
 
 
 with open("WORDS.pkl","wb") as f:

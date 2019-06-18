@@ -80,6 +80,7 @@ class WordSegmentor(object):
 		"Return a list of words that is the best segmentation of text."
 		if not text: return []
 		candidates = [[first.strip()]+[rem.strip()] for first,rem in self.splits(text)]
+		candidates = [[c for c in can if c!=""] for can in candidates ]
 		# print(candidates)
 		# print(list(map(lambda x: (x,self.Pwords(x)),candidates)))
 		return max(candidates, key=self.Pwords)
@@ -100,8 +101,15 @@ class ScratchChecker(BaseChecker):
 		super(ScratchChecker, self).__init__(preproc_rules)
 		self.sc=SpellCorrector(corpus_path)
 		self.ws=WordSegmentor(corpus_path)
+		self.WORDS=defaultdict(int)
+		d = pickle.load(open(corpus_path,"rb"))
+		for k,v in d.items():
+			self.WORDS[k]=v
 
 	def process(self,word):
+		if word in self.WORDS.keys():
+		#in case already correct word but segmenting words lead to higher likelihood
+			return [word]
 		out =  self.ws.segment(word)
 		output = []
 		for o in range(len(out)):
