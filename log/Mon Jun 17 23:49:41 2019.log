@@ -1,0 +1,14 @@
+INFO:sanic.root:Goin' Fast @ http://0.0.0.0:8000
+INFO:sanic.root:Starting worker [29084]
+INFO:sanic.root:Starting worker [29085]
+INFO:sanic.root:Starting worker [29086]
+INFO:sanic.root:Starting worker [29087]
+ERROR:sanic.root:Exception occurred while handling uri: unknown
+Traceback (most recent call last):
+  File "/Users/avhirupchakraborty/Programming/anaconda3/envs/haiku/lib/python3.6/site-packages/sanic/server.py", line 267, in data_received
+    self.parser.feed_data(data)
+  File "httptools/parser/parser.pyx", line 193, in httptools.parser.parser.HttpParser.feed_data
+httptools.parser.errors.HttpParserInvalidMethodError: invalid HTTP method
+INFO:sanic.root:Received signal SIGINT. Shutting down.
+INFO:sanic.root:Server Stopped
+INFO:sanic.root:Stopping worker [29085]

@@ -1,0 +1,11 @@
+INFO:sanic.root:Goin' Fast @ http://0.0.0.0:8000
+INFO:sanic.root:Starting worker [18448]
+INFO:sanic.root:Starting worker [18450]
+INFO:sanic.root:Starting worker [18449]
+INFO:sanic.root:Starting worker [18451]
+INFO:sanic.root:Received signal SIGINT. Shutting down.
+INFO:sanic.root:Stopping worker [18451]
+INFO:sanic.root:Stopping worker [18450]
+INFO:sanic.root:Stopping worker [18449]
+INFO:sanic.root:Stopping worker [18448]
+INFO:sanic.root:Server Stopped

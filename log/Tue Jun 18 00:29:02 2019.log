@@ -1,0 +1,13 @@
+INFO:sanic.root:Goin' Fast @ http://0.0.0.0:8080
+INFO:sanic.root:Starting worker [39126]
+INFO:sanic.root:Starting worker [39127]
+INFO:sanic.root:Starting worker [39128]
+INFO:sanic.root:Starting worker [39129]
+INFO:sanic:Time Taken 0:00:00.057466
+INFO:sanic.access:
+INFO:sanic.root:Received signal SIGINT. Shutting down.
+INFO:sanic.root:Stopping worker [39128]
+INFO:sanic.root:Stopping worker [39129]
+INFO:sanic.root:Stopping worker [39127]
+INFO:sanic.root:Stopping worker [39126]
+INFO:sanic.root:Server Stopped
