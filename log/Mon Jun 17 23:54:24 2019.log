@@ -1,6 +1,0 @@
-INFO:sanic.root:Goin' Fast @ http://0.0.0.0:8000
-INFO:sanic.root:Starting worker [30585]
-INFO:sanic.root:Starting worker [30586]
-INFO:sanic.root:Starting worker [30587]
-INFO:sanic.root:Starting worker [30588]
-INFO:sanic.root:Server Stopped
