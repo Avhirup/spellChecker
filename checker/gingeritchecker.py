@@ -11,7 +11,9 @@ class GingerItChecker(BaseChecker):
 
 	def process(self,sent):
 		parser=GingerIt()
+		print(111)
 		res=parser.parse(sent)
+		print(1111)
 		correct_spells=[]
 		
 		if self.opt==1:
@@ -19,7 +21,7 @@ class GingerItChecker(BaseChecker):
 				correct_spells.extend(corr['correct'].split(" "))
 		else:
 			return res['result'].split(" ")
-		
+		print(correct_spells)
 		return correct_spells
 
 

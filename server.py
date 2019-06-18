@@ -16,7 +16,7 @@ from preprocess_rules import rule_pipe
 app = Sanic(__name__)
 _LOGGER = logging.getLogger('sanic')
 argparser = argparse.ArgumentParser(description='Spelling Correction app')
-argparser.add_argument('--checker', choices=["gingerit","textblob","scratch"], default="gingerit")
+argparser.add_argument('--checker', choices=["gingerit","textblob","scratch"], default="scratch")
 args = argparser.parse_args()
 
 checker=GingerItChecker(rule_pipe)
@@ -42,6 +42,7 @@ async def post_handler(request):
 	"""
 	try:
 		result={}
+		# print(request.json)
 		st_dt=datetime.now()
 		word=request.json['word']
 		result={"corrected_words":checker.checks_spell(word)}
