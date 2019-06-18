@@ -3,6 +3,7 @@ from datetime import datetime
 import re
 from collections import Counter
 import spacy
+import string 
 nlp = spacy.load('en')
 
 _LOGGER = logging.getLogger('sanic')

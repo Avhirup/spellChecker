@@ -1,24 +1,29 @@
 import re
 import numpy as np
-from collections import Counter
+from collections import Counter,defaultdict
 from utils import words
 from .base import BaseChecker
 from memo import memo
 from functools import reduce
 from textblob import Word
+import pickle
 
 class SpellCorrector(object):
 	"""docstring for SpellCorrector"""
-	def __init__(self, corpus_path='big.txt'):
+	def __init__(self, corpus_path='WORDS.pkl'):
 		super(SpellCorrector, self).__init__()
-		self.Words = dict(Counter(words(open(corpus_path).read())))
-		self.N=sum(self.Words.values())
+		self.WORDS=defaultdict(int)
+		d = pickle.load(open(corpus_path,"rb"))
+		for k,v in d.items():
+			self.WORDS[k]=v
+
+		self.N=sum(self.WORDS.values())
 
 			
 	def P(self,word): 
 		"Probability of `word`."
 		try:
-			return self.Words[word] / self.N        
+			return self.WORDS[word] / self.N        
 		except KeyError:
 			#prob for word not found is extremely low 
 			return -np.inf
@@ -35,8 +40,8 @@ class SpellCorrector(object):
 		# return self.known([word]) + self.known(self.edits1(word)) + self.known(self.edits2(word)) + [word]
 			
 	def known(self,words): 
-		"The subset of `words` that appear in the dictionary of Words."
-		return (set(w for w in words if w in self.Words))
+		"The subset of `words` that appear in the dictionary of WORDS."
+		return (set(w for w in words if w in self.WORDS))
 
 	def edits1(self,word):
 		"All edits that are one edit away from `word`."
@@ -55,13 +60,15 @@ class SpellCorrector(object):
 
 class WordSegmentor(object):
 	"""docstring for WordSegmentor"""
-	def __init__(self, corpus_path='big.txt',use_textblob=False):
+	def __init__(self, corpus_path='WORDS.pkl'):
 		super(WordSegmentor, self).__init__()
 		self.sc=SpellCorrector(corpus_path)
-		self.WORDS = Counter(words(open(corpus_path).read()))
+		self.WORDS=defaultdict(int)
+		d = pickle.load(open(corpus_path,"rb"))
+		for k,v in d.items():
+			self.WORDS[k]=v
 		self.max_word_length = max(map(len, self.WORDS))
 		self.total = float(sum(self.WORDS.values()))
-		self.use_textblob=use_textblob
 
 	def splits(self,text, L=5):
 		"Return a list of all possible (first, rem) pairs, len(first)<=L."
@@ -72,9 +79,9 @@ class WordSegmentor(object):
 	def segment(self,text):
 		"Return a list of words that is the best segmentation of text."
 		if not text: return []
-		candidates = [[first]+[rem] for first,rem in self.splits(text)]
-		print(list(candidates))
-		print(list(map(lambda x: (x,self.Pwords(x)),candidates)))
+		candidates = [[first.strip()]+[rem.strip()] for first,rem in self.splits(text)]
+		# print(candidates)
+		# print(list(map(lambda x: (x,self.Pwords(x)),candidates)))
 		return max(candidates, key=self.Pwords)
 	
 	def Pwords(self,words):
@@ -84,20 +91,15 @@ class WordSegmentor(object):
 		return prod
 
 	def word_prob(self,word):
-		if not self.use_textblob:
-			return self.WORDS[word] / self.total
-		else:
-			#need to improve this spell check is giving w
-			return Word(word).spellcheck()[0][1]
+		return self.WORDS[word] / self.total
 
 		
 class ScratchChecker(BaseChecker):
 	"""docstring for ScratchChecker"""
-	def __init__(self, preproc_rules=None,file_path='big.txt'):
+	def __init__(self, preproc_rules=None,corpus_path='WORDS.pkl'):
 		super(ScratchChecker, self).__init__(preproc_rules)
-		self.sc=SpellCorrector(file_path)
-		self.ws=WordSegmentor(file_path)
-		self.WORDS = dict(Counter(words(open(file_path).read())))
+		self.sc=SpellCorrector(corpus_path)
+		self.ws=WordSegmentor(corpus_path)
 
 	def process(self,word):
 		out =  self.ws.segment(word)

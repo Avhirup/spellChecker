@@ -5,12 +5,16 @@ import string
 import pandas as pd
 from nltk.corpus import stopwords
 import nltk
-from utils import removeNonAscii,clean_comments
+from collections import Counter,defaultdict
+import pickle as pkl 
+from utils import removeNonAscii,clean_comments,words
 #get english stopwords
 en_stopwords = set(stopwords.words('english'))
 
 #extract only reviews
-comments = open('big.txt','r').read()
+corpus_path='big.txt'
+
+comments = open(corpus_path,'r').read()
 THRESHOLD_FREQ=2
 THRES=4
 
@@ -65,7 +69,6 @@ trigramFreqTable = pd.DataFrame(list(trigram_freq), columns=['trigram','freq']).
 #filter
 filtered_bi = bigramFreqTable[bigramFreqTable.bigram.map(lambda x: rightTypes(x))]
 filtered_tri = trigramFreqTable[trigramFreqTable.trigram.map(lambda x: rightTypesTri(x))]
-print(filtered_bi)
 
 #filter for only those with more than 20 occurences
 bigramFinder.apply_freq_filter(THRESHOLD_FREQ)
@@ -93,4 +96,8 @@ trigrams={}
 for k,v in zip(trigramFreqTable['trigram'],trigramFreqTable['freq']):
     trigrams[k]=v
 
+words_counter=dict(Counter(words(open(corpus_path).read())))
 
+
+with open("WORDS.pkl","wb") as f:
+    pkl.dump({**words_counter,**bigrams,**trigrams},f)
